@@ -6,6 +6,7 @@ const itemMarkup = createGalleryMarkup(galleryItems);
 
 galleryContainer.insertAdjacentHTML("beforeend", itemMarkup);
 galleryContainer.addEventListener("click", onGalleryItemClick);
+document.addEventListener("keydown", onCloseModal);
 
 function createGalleryMarkup(galleryItems) {
   return galleryItems
@@ -20,7 +21,17 @@ function createGalleryMarkup(galleryItems) {
 }
 
 function onGalleryItemClick(event) {
-  console.log(event.target);
-}
+  const modal = basicLightbox.create(`
+      <img src='${event.target.dataset.source}' width="800" height="600">
+  `);
 
-// console.log(galleryItems);
+  modal.show();
+
+  document.addEventListener("keydown", onCloseModal);
+
+  function onCloseModal(event) {
+    if (event.code === "Escape") {
+      modal.close();
+    }
+  }
+}
